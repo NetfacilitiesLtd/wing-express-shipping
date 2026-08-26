@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowRight,
@@ -39,7 +39,7 @@ type TrackingEvent = {
   event_time: string;
 };
 
-export default function TrackPage() {
+function TrackPageContent() {
     const searchParams = useSearchParams();
   const [trackingNumber, setTrackingNumber] = useState("");
   const [shipment, setShipment] = useState<Shipment | null>(null);
@@ -470,5 +470,12 @@ const getTrackingStatusIcon = (status: string) => {
         </section>
       )}
     </main>
+  );
+}
+export default function TrackPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TrackPageContent />
+    </Suspense>
   );
 }
