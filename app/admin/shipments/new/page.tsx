@@ -34,6 +34,7 @@ export default function NewShipmentPage() {
     package_description: "",
     package_weight: "",
     shipping_method: "Express Delivery",
+    shipment_type: "Air Freight",
     estimated_delivery: "",
     status: "Pending",
   });
@@ -71,14 +72,29 @@ const handleCreateShipment = async () => {
     )}`;
 
   const { error } = await supabase.from("shipments").insert([
-    {
-      ...formData,
-      tracking_number: newTrackingNumber,
-      current_location: formData.origin_city,
-      package_weight: formData.package_weight
-        ? Number(formData.package_weight)
-        : null,
-    },
+   {
+  tracking_number: newTrackingNumber,
+  customer_name: formData.customer_name,
+  customer_email: formData.customer_email,
+  customer_phone: formData.customer_phone,
+  recipient_name: formData.recipient_name,
+  recipient_phone: formData.recipient_phone,
+  recipient_email: formData.recipient_email,
+  recipient_address: formData.recipient_address,
+  origin_city: formData.origin_city,
+  origin_country: formData.origin_country,
+  destination_city: formData.destination_city,
+  destination_country: formData.destination_country,
+  package_description: formData.package_description,
+  package_weight: formData.package_weight
+    ? Number(formData.package_weight)
+    : null,
+  shipping_method: formData.shipping_method,
+  shipment_type: formData.shipment_type,
+  estimated_delivery: formData.estimated_delivery || null,
+  status: formData.status,
+  current_location: formData.origin_city,
+},
   ]);
 
   if (error) {
@@ -293,62 +309,106 @@ onChange={handleChange}
             </section>
 
             {/* Route */}
-            <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-200 px-6 py-5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100">
-                    <Globe2 className="h-5 w-5 text-emerald-700" />
-                  </div>
+<section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div className="border-b border-slate-200 px-6 py-5">
+    <div className="flex items-center gap-3">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100">
+        <Globe2 className="h-5 w-5 text-emerald-700" />
+      </div>
 
-                  <div>
-                    <h2 className="font-black text-slate-950">
-                      Shipping Route
-                    </h2>
-                    <p className="text-sm text-slate-500">
-                      Set the origin and destination of the shipment.
-                    </p>
-                  </div>
-                </div>
-              </div>
+      <div>
+        <h2 className="font-black text-slate-950">
+          Shipping Route
+        </h2>
+        <p className="text-sm text-slate-500">
+          Set the origin and destination of the shipment.
+        </p>
+      </div>
+    </div>
+  </div>
 
-              <div className="grid gap-5 p-6 sm:grid-cols-2">
-                <div>
-                  <label className="mb-2 block text-sm font-bold text-slate-700">
-                    Origin
-                  </label>
+  <div className="grid gap-5 p-6 sm:grid-cols-2">
+    {/* Origin City */}
+    <div>
+      <label className="mb-2 block text-sm font-bold text-slate-700">
+        Origin City
+      </label>
 
-                  <div className="relative">
-                    <MapPin className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+      <div className="relative">
+        <MapPin className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
-                    <input
-                      type="text"
-                      placeholder="Enter origin city and country"
-                      className="w-full rounded-xl border border-slate-200 px-4 py-3.5 pl-12 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                    />
-                  </div>
-                </div>
+        <input
+          type="text"
+          name="origin_city"
+          placeholder="Enter origin city"
+          value={formData.origin_city}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-slate-200 px-4 py-3.5 pl-12 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+        />
+      </div>
+    </div>
 
-                <div>
-                  <label className="mb-2 block text-sm font-bold text-slate-700">
-                    Destination
-                  </label>
+    {/* Origin Country */}
+    <div>
+      <label className="mb-2 block text-sm font-bold text-slate-700">
+        Origin Country
+      </label>
 
-                  <div className="relative">
-                    <MapPin className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+      <div className="relative">
+        <Globe2 className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
-                    <input
-                      type="text"
-                      name="destination_city"
-                      placeholder="Enter destination city and country"
-                      value={formData.destination_city}
-                      onChange={handleChange}
-                      className="w-full rounded-xl border border-slate-200 px-4 py-3.5 pl-12 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
+        <input
+          type="text"
+          name="origin_country"
+          placeholder="Enter origin country"
+          value={formData.origin_country}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-slate-200 px-4 py-3.5 pl-12 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+        />
+      </div>
+    </div>
 
+    {/* Destination City */}
+    <div>
+      <label className="mb-2 block text-sm font-bold text-slate-700">
+        Destination City
+      </label>
+
+      <div className="relative">
+        <MapPin className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+
+        <input
+          type="text"
+          name="destination_city"
+          placeholder="Enter destination city"
+          value={formData.destination_city}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-slate-200 px-4 py-3.5 pl-12 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+        />
+      </div>
+    </div>
+
+    {/* Destination Country */}
+    <div>
+      <label className="mb-2 block text-sm font-bold text-slate-700">
+        Destination Country
+      </label>
+
+      <div className="relative">
+        <Globe2 className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+
+        <input
+          type="text"
+          name="destination_country"
+          placeholder="Enter destination country"
+          value={formData.destination_country}
+          onChange={handleChange}
+          className="w-full rounded-xl border border-slate-200 px-4 py-3.5 pl-12 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+        />
+      </div>
+    </div>
+  </div>
+</section>
             {/* Package */}
             <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-200 px-6 py-5">
@@ -419,6 +479,21 @@ onChange={handleChange}
                   </select>
                 </div>
 
+                <div>
+  <label className="mb-2 block text-sm font-bold text-slate-700">
+    Shipment Type
+  </label>
+
+  <select
+    name="shipment_type"
+    value={formData.shipment_type}
+    onChange={handleChange}
+    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+  >
+    <option>Air Freight</option>
+    <option>Sea Freight</option>
+  </select>
+</div>
                 <div>
                   <label className="mb-2 block text-sm font-bold text-slate-700">
                     Shipping Service

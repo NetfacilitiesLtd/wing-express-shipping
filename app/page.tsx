@@ -37,20 +37,20 @@ export default function Home() {
       {/* Navigation */}
       <header className="absolute left-0 right-0 top-0 z-50">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-8">
-          <div className="flex items-center">
+         <div className="flex items-center rounded-2xl bg-white p-2 shadow-lg ring-1 ring-white/20">
   <Image
-  src="/images/wing-express-logo.jpg"
-  alt="Wing Express Shipping"
-  width={110}
-  height={100}
-  className="h-auto w-[90px] object-contain"
-  priority
-/>
+    src="/images/wing-express-logo.jpg"
+    alt="Wing Express Shipping"
+    width={110}
+    height={100}
+    className="w-[90px] h-auto object-contain"
+    priority
+  />
 </div>
 
           <nav className="hidden items-center gap-8 md:flex">
             <a
-              href="#"
+              href="#home"
               className="text-sm font-medium text-white transition hover:text-blue-200"
             >
               Home
@@ -95,8 +95,21 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-blue-800">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.35),transparent_35%)]" />
+      <section id="home" className="relative overflow-hidden">
+  {/* Shipping background image */}
+  <Image
+    src="/images/shipping-hero.jpg"
+    alt="Air, sea and road shipping logistics"
+    fill
+    priority
+    className="object-cover"
+  />
+
+  {/* Dark overlay for readability */}
+ <div className="absolute inset-0 bg-gradient-to-r from-slate-950/65 via-slate-900/35 to-slate-900/10" />
+
+  {/* Subtle blue overlay */}
+  <div className="absolute inset-0 bg-gradient-to-r from-blue-950/70 via-blue-950/45 to-transparent" />
 
         <div className="relative mx-auto grid min-h-[720px] max-w-7xl items-center gap-12 px-6 pb-20 pt-36 lg:grid-cols-2 lg:px-8">
           <div className="max-w-2xl">
@@ -218,9 +231,9 @@ export default function Home() {
 
       {/* Services */}
       <section
-        id="services"
-        className="bg-slate-50 px-6 py-24 lg:px-8"
-      >
+  id="services"
+  className="bg-slate-50 px-6 pt-24 pb-16 lg:px-8"
+>
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-700">
@@ -393,27 +406,69 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-slate-950 px-6 py-10 text-white lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-6 md:flex-row md:items-center">
-          <div>
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-700">
-                <Plane className="h-5 w-5 text-white" />
-              </div>
+        <div className="mx-auto max-w-7xl">
+  <div className="grid gap-10 md:grid-cols-3">
+    {/* Company */}
+    <div>
+      <Image
+        src="/images/wing-express-logo.jpg"
+        alt="Wing Express Shipping"
+        width={110}
+        height={100}
+        className="h-auto w-[85px] object-contain"
+      />
 
-              <span className="text-lg font-extrabold">
-                Wing Express Shipping
-              </span>
-            </div>
+      <p className="mt-4 text-sm text-slate-400">
+        Reliable logistics. Wherever you need to go.
+      </p>
+    </div>
 
-            <p className="mt-3 text-sm text-slate-400">
-              Reliable logistics. Wherever you need to go.
-            </p>
-          </div>
+    {/* Quick Links */}
+    <div>
+      <h3 className="text-base font-bold text-white">Quick Links</h3>
 
-          <p className="text-sm text-slate-500">
-            © 2026 Wing Express Shipping. All rights reserved.
-          </p>
-        </div>
+      <div className="mt-4 flex flex-col gap-3 text-sm">
+        <a href="#home" className="text-slate-400 transition hover:text-white">
+          Home
+        </a>
+        <a
+          href="#services"
+          className="text-slate-400 transition hover:text-white"
+        >
+          Services
+        </a>
+        <a
+          href="#tracking"
+          className="text-slate-400 transition hover:text-white"
+        >
+          Track Shipment
+        </a>
+        <a
+          href="#contact"
+          className="text-slate-400 transition hover:text-white"
+        >
+          Contact Us
+        </a>
+      </div>
+    </div>
+
+    {/* Contact */}
+    <div>
+      <h3 className="text-base font-bold text-white">Contact Us</h3>
+
+      <div className="mt-4 space-y-3 text-sm text-slate-400">
+        <p>Email: info@wingexpressshipping.com</p>
+        <p>Phone: +1 (000) 000-0000</p>
+        <p>Available for local and international shipping inquiries.</p>
+      </div>
+    </div>
+  </div>
+
+  {/* Bottom copyright */}
+  <div className="mt-10 border-t border-slate-800 pt-6 text-center text-sm text-slate-500">
+    © 2026 Wing Express Shipping. All rights reserved.
+  </div>
+</div>
       </footer>
     </main>
   );

@@ -150,9 +150,15 @@ useEffect(() => {
                 className="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 py-3.5 pl-11 pr-4 text-sm font-medium outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
               >
                 <option value="All">All Statuses</option>
-                <option value="Processing">Processing</option>
-                <option value="In Transit">In Transit</option>
-                <option value="Delivered">Delivered</option>
+<option value="Pending">Pending</option>
+<option value="Processing">Processing</option>
+<option value="Awaiting Shipment">Awaiting Shipment</option>
+<option value="Shipped">Shipped</option>
+<option value="In Transit">In Transit</option>
+<option value="Picked Up">Picked Up</option>
+<option value="Out for Delivery">Out for Delivery</option>
+<option value="On Hold">On Hold</option>
+<option value="Delivered">Delivered</option>
               </select>
             </div>
           </div>

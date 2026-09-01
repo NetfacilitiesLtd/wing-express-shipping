@@ -12,8 +12,9 @@ import {
   Search,
   ShieldCheck,
   Truck,
-  Plane,
-  Ship,
+Plane,
+Ship,
+Warehouse,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -163,16 +164,37 @@ function TrackPageContent() {
     });
   };
 const getShipmentIcon = () => {
-  const status = shipment?.status?.toLowerCase();
-  const type = shipment?.shipment_type?.toLowerCase();
+  const status = shipment?.status?.toLowerCase() || "";
+  const type = shipment?.shipment_type?.toLowerCase() || "";
 
-  // Final delivery is always handled locally
+  // A shipment being delivered locally uses a truck
   if (status === "out for delivery") return Truck;
 
-  if (type === "air") return Plane;
-  if (type === "sea") return Ship;
+  // Use the correct transport icon based on shipment type
+  if (type.includes("air")) return Plane;
+  if (type.includes("sea")) return Ship;
 
-  return Truck;
+  return Package;
+};
+const getCurrentLocationIcon = () => {
+  const status = shipment?.status?.toLowerCase() || "";
+
+  // Newly created or pending shipments are still at a facility
+  if (
+    status === "pending" ||
+    status === "processing" ||
+    status === "picked up"
+  ) {
+    return Warehouse;
+  }
+
+  // Shipments in transit use the appropriate transport icon
+  if (status.includes("transit")) return getShipmentIcon();
+
+  // Local delivery uses a truck
+  if (status === "out for delivery") return Truck;
+
+  return Warehouse;
 };
 
 const getTrackingStatusIcon = (status: string) => {
@@ -198,21 +220,13 @@ const getTrackingStatusIcon = (status: string) => {
       {/* Header */}
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
-          <a href="/" className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-700">
-              <Truck className="h-6 w-6 text-white" />
-            </div>
-
-            <div>
-              <p className="text-lg font-black tracking-tight text-slate-950">
-                Wing Express
-              </p>
-
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-blue-700">
-                Shipping
-              </p>
-            </div>
-          </a>
+          <a href="/" className="flex items-center">
+  <img
+    src="/images/wing-express-logo.jpg"
+    alt="Wing Express"
+    className="h-24 w-auto object-contain"
+  />
+</a>
 
           <a
             href="/"
@@ -224,7 +238,15 @@ const getTrackingStatusIcon = (status: string) => {
       </header>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-blue-950 via-blue-900 to-blue-700 px-6 py-16 text-white lg:py-20">
+      <section
+  className="relative overflow-hidden px-6 py-16 text-white lg:py-20"
+  style={{
+  backgroundImage:
+    "linear-gradient(rgba(5, 20, 60, 0.62), rgba(5, 20, 60, 0.62)), url('/images/tracking-hero.jpg')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+}}
+>
         <div className="mx-auto max-w-4xl text-center">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20">
             <Package className="h-7 w-7" />
@@ -330,13 +352,19 @@ const getTrackingStatusIcon = (status: string) => {
                 </p>
 
                 <div className="mt-2 flex items-center gap-2">
-                  {(() => {
-  const ShipmentIcon = getShipmentIcon();
-  return <ShipmentIcon className="h-5 w-5 text-blue-600" />;
+                 {(() => {
+  const LocationIcon = getCurrentLocationIcon();
+  return <LocationIcon className="h-5 w-5 text-blue-600" />;
 })()}
-                  <p className="font-bold text-slate-900">
-                    {shipment.current_location}
-                  </p>
+                  <div>
+ <p className="font-bold text-slate-900">
+  {shipment.status.toLowerCase() === "pending"
+    ? `${shipment.origin_city} Sorting Facility`
+    : shipment.current_location}
+</p>
+
+  
+</div>
                 </div>
               </div>
 
@@ -353,6 +381,21 @@ const getTrackingStatusIcon = (status: string) => {
                   </p>
                 </div>
               </div>
+            <div>
+  <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+    Shipment Type
+  </p>
+
+  <div className="mt-2 flex items-center gap-2">
+    {(() => {
+      const ShipmentIcon = getShipmentIcon();
+      return <ShipmentIcon className="h-5 w-5 text-blue-600" />;
+    })()}
+    <p className="font-bold text-slate-900">
+      {shipment.shipment_type || "Not specified"}
+    </p>
+  </div>
+</div>
             </div>
           </div>
 
@@ -468,7 +511,109 @@ const getTrackingStatusIcon = (status: string) => {
             </div>
           </div>
         </section>
-      )}
+            )}
+
+      {/* Footer */}
+<footer className="mt-12 bg-blue-950 text-white">
+  <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+
+    {/* Main Footer */}
+    <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+
+      {/* Company */}
+      <div>
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600">
+            <Truck className="h-6 w-6 text-white" />
+          </div>
+
+          <div>
+            <p className="text-lg font-black tracking-tight text-white">
+              Wing Express
+            </p>
+
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-blue-300">
+              Shipping
+            </p>
+          </div>
+        </div>
+
+        <p className="mt-4 max-w-sm text-sm leading-6 text-blue-100">
+          Reliable shipping and logistics services connecting businesses
+          and customers around the world.
+        </p>
+      </div>
+
+      {/* Quick Links */}
+      <div>
+        <h3 className="text-sm font-black uppercase tracking-wider text-white">
+          Quick Links
+        </h3>
+
+        <div className="mt-4 space-y-3">
+          <a
+            href="/"
+            className="block text-sm font-medium text-blue-100 transition hover:text-white"
+          >
+            Home
+          </a>
+
+          <a
+            href="/track"
+            className="block text-sm font-medium text-blue-100 transition hover:text-white"
+          >
+            Track Shipment
+          </a>
+
+          <a
+            href="/#contact"
+            className="block text-sm font-medium text-blue-100 transition hover:text-white"
+          >
+            Contact Us
+          </a>
+        </div>
+      </div>
+
+      {/* Shipment Tracking */}
+      <div>
+        <h3 className="text-sm font-black uppercase tracking-wider text-white">
+          Shipment Tracking
+        </h3>
+
+        <p className="mt-4 text-sm leading-6 text-blue-100">
+          Track your shipment anytime and view the latest location,
+          status and delivery updates.
+        </p>
+
+        <a
+          href="/track"
+          className="mt-5 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/30 transition hover:bg-blue-500"
+        >
+          <Package className="h-4 w-4" />
+          Track Your Package
+        </a>
+      </div>
+    </div>
+
+    {/* Bottom Footer */}
+    <div className="mt-10 border-t border-blue-800 pt-6">
+      <div className="flex flex-col justify-between gap-3 text-xs text-blue-200 sm:flex-row sm:items-center">
+
+        <p>
+          © {new Date().getFullYear()} Wing Express. All rights reserved.
+        </p>
+
+        <div className="flex items-center gap-5">
+          <span>Secure shipment tracking</span>
+          <span className="hidden text-blue-700 sm:inline">|</span>
+          <span>Global Logistics</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</footer>
     </main>
   );
 }

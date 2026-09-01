@@ -42,6 +42,17 @@ export default function ShipmentDetailsPage() {
       } else {
         setShipmentData(data);
         setStatus(data.status || "Processing");
+          const { data: trackingData, error: trackingError } = await supabase
+    .from("tracking_events")
+    .select("*")
+    .eq("shipment_id", data.id)
+    .order("event_time", { ascending: false });
+
+  if (trackingError) {
+    console.error("Error loading tracking history:", trackingError);
+  } else {
+    setUpdates(trackingData || []);
+  }
       }
 
       setLoading(false);
@@ -87,6 +98,11 @@ if (!shipmentData) {
     return;
   }
 
+  console.log("Updating shipment:", {
+  shipmentId: shipmentData.id,
+  location: location.trim(),
+  status,
+});
   const { error: shipmentError } = await supabase
     .from("shipments")
     .update({
@@ -321,6 +337,15 @@ if (!shipmentData) {
                   </p>
                 </div>
               </div>
+              <div>
+  <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+    Shipment Type
+  </p>
+
+  <p className="mt-1 font-semibold text-slate-900">
+    {shipmentData.shipment_type || "Air Freight"}
+  </p>
+</div>
             </section>
 
             {/* Tracking History */}
