@@ -701,7 +701,7 @@ function TrackPageContent() {
 
         <div className="mt-5 space-y-4 text-sm text-slate-300">
   <p>
-    Email: info@wingexpresslogistics.com
+    Email: info@wingxpresslogistics.com
   </p>
 
   <p>

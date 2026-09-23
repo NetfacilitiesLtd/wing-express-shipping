@@ -457,7 +457,7 @@ export default function Home() {
       <h3 className="text-base font-bold text-white">Contact Us</h3>
 
       <div className="mt-4 space-y-3 text-sm text-slate-400">
-        <p>Email: info@wingexpresslogistics.com</p>
+        <p>Email: info@wingxpresslogistics.com</p>
         <p>Phone: +44 73 554 53466</p>
         <p>
   Address: 88-90 Chorlton Rd, Old Trafford, Stretford,
