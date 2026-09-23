@@ -39,8 +39,8 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-8">
          <div className="flex items-center rounded-2xl bg-white p-2 shadow-lg ring-1 ring-white/20">
   <Image
-    src="/images/wing-express-logo.jpg"
-    alt="Wing Express Shipping"
+    src="/images/wing-express-logistics-logo.png"
+    alt="Wing Express Logistics"
     width={110}
     height={100}
     className="w-[90px] h-auto object-contain"
@@ -128,7 +128,7 @@ export default function Home() {
             <p className="mt-6 max-w-xl text-lg leading-8 text-blue-100 sm:text-xl">
               Fast, reliable and secure shipping solutions for individuals
               and businesses. From local deliveries to international
-              logistics, Wing Express Shipping keeps your packages moving.
+              logistics, Wing Express Logistics keeps your packages moving.
             </p>
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -319,7 +319,7 @@ export default function Home() {
             </h2>
 
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              We are building Wing Express Shipping around a simple idea:
+              We are building Wing Express Logistics around a simple idea:
               shipping should be dependable, transparent and easy to track.
             </p>
 
@@ -411,8 +411,8 @@ export default function Home() {
     {/* Company */}
     <div>
       <Image
-        src="/images/wing-express-logo.jpg"
-        alt="Wing Express Shipping"
+        src="/images/wing-express-logistics-logo.png"
+        alt="Wing Express Logistics"
         width={110}
         height={100}
         className="h-auto w-[85px] object-contain"
@@ -457,16 +457,20 @@ export default function Home() {
       <h3 className="text-base font-bold text-white">Contact Us</h3>
 
       <div className="mt-4 space-y-3 text-sm text-slate-400">
-        <p>Email: info@wingexpressshipping.com</p>
-        <p>Phone: +1 (000) 000-0000</p>
-        <p>Available for local and international shipping inquiries.</p>
+        <p>Email: info@wingexpresslogistics.com</p>
+        <p>Phone: +44 73 554 53466</p>
+        <p>
+  Address: 88-90 Chorlton Rd, Old Trafford, Stretford,
+  Manchester M15 4AN, United Kingdom
+</p>
+<p>Available for local and international shipping inquiries.</p>
       </div>
     </div>
   </div>
 
   {/* Bottom copyright */}
   <div className="mt-10 border-t border-slate-800 pt-6 text-center text-sm text-slate-500">
-    © 2026 Wing Express Shipping. All rights reserved.
+    © 2026 Wing Express Logistics. All rights reserved.
   </div>
 </div>
       </footer>

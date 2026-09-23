@@ -73,7 +73,7 @@ return (
             </div>
 
             <p className="text-sm text-blue-200">
-              Wing Express Shipping Management Portal
+              Wing Express Logistics Management Portal
             </p>
           </div>
         </section>
@@ -202,13 +202,13 @@ onChange={(e) => setPassword(e.target.value)}
               <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-blue-700" />
 
               <p className="text-xs leading-5 text-slate-600">
-                This portal is for authorized Wing Express Shipping
+                This portal is for authorized Wing Express Logistics
                 personnel only.
               </p>
             </div>
 
             <p className="mt-8 text-center text-xs text-slate-400">
-              © 2026 Wing Express Shipping. All rights reserved.
+              © 2026 Wing Express Logistics. All rights reserved.
             </p>
           </div>
         </section>

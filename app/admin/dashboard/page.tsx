@@ -169,7 +169,7 @@ export default function AdminDashboardPage() {
                     Administrator
                   </p>
                   <p className="text-xs text-slate-500">
-                    Wing Express Shipping
+                    Wing Express Logistics
                   </p>
                 </div>
 
