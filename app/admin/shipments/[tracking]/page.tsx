@@ -9,8 +9,9 @@ import {
   MapPin,
   Package,
   Save,
-  Truck,
-  User,
+Trash2,
+Truck,
+User,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -147,7 +148,37 @@ if (!shipmentData) {
     setSaved(false);
   }, 3000);
 };
+  const deleteShipment = async () => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete shipment ${shipmentData.tracking_number}? This action cannot be undone.`
+    );
 
+    if (!confirmed) return;
+
+    const { error: trackingError } = await supabase
+      .from("tracking_events")
+      .delete()
+      .eq("shipment_id", shipmentData.id);
+
+    if (trackingError) {
+      console.error("Error deleting tracking history:", trackingError);
+      alert("Failed to delete the shipment tracking history.");
+      return;
+    }
+
+    const { error: shipmentError } = await supabase
+      .from("shipments")
+      .delete()
+      .eq("id", shipmentData.id);
+
+    if (shipmentError) {
+      console.error("Error deleting shipment:", shipmentError);
+      alert("Failed to delete the shipment.");
+      return;
+    }
+
+    window.location.href = "/admin/shipments";
+  };
   return (
     <main className="min-h-screen bg-slate-100 text-slate-900">
       {/* Header */}
@@ -206,9 +237,20 @@ if (!shipmentData) {
               </div>
             </div>
 
-            <div className="rounded-full bg-blue-500/30 px-4 py-2 text-sm font-bold">
-              {updates[0]?.status || "Processing"}
-            </div>
+            <div className="flex items-center gap-3">
+  <div className="rounded-full bg-blue-500/30 px-4 py-2 text-sm font-bold">
+    {updates[0]?.status || "Processing"}
+  </div>
+
+  <button
+    type="button"
+    onClick={deleteShipment}
+    className="flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-red-700"
+  >
+    <Trash2 className="h-4 w-4" />
+    Delete Shipment
+  </button>
+</div>
           </div>
         </section>
 
