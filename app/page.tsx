@@ -12,10 +12,12 @@ import {
   ShieldCheck,
   Truck,
 } from "lucide-react";
-
+import { useLanguage } from "./i18n/LanguageContext";
+import { translations } from "./i18n/translations";
 export default function Home() {
   const router = useRouter();
-
+const { language, setLanguage } = useLanguage();
+const t = translations[language];
   const handleTracking = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -53,43 +55,65 @@ export default function Home() {
               href="#home"
               className="text-sm font-medium text-white transition hover:text-blue-200"
             >
-              Home
+             {t.home}
             </a>
 
             <a
               href="#about"
               className="text-sm font-medium text-white transition hover:text-blue-200"
             >
-              About
+              {t.about}
             </a>
 
             <a
               href="#services"
               className="text-sm font-medium text-white transition hover:text-blue-200"
             >
-              Services
+              {t.services}
             </a>
 
             <a
               href="#tracking"
               className="text-sm font-medium text-white transition hover:text-blue-200"
             >
-              Track Shipment
+              {t.trackShipment}
             </a>
 
             <a
               href="#contact"
               className="text-sm font-medium text-white transition hover:text-blue-200"
             >
-              Contact
+              {t.contact}
             </a>
           </nav>
+          <div className="ml-4">
+  <select
+    value={language}
+    onChange={(event) =>
+      setLanguage(event.target.value as "en" | "fr" | "nl" | "de")
+    }
+    className="rounded-lg border border-white/30 bg-white/10 px-3 py-2 text-sm font-medium text-white outline-none backdrop-blur-sm"
+  >
+    <option value="en" className="text-slate-900">
+      English
+    </option>
+    <option value="fr" className="text-slate-900">
+      Français
+    </option>
+    <option value="nl" className="text-slate-900">
+      Nederlands
+    </option>
+    <option value="de" className="text-slate-900">
+      Deutsch
+    </option>
+  </select>
+</div>
 
           <a
             href="#tracking"
             className="hidden rounded-full bg-white px-5 py-2.5 text-sm font-bold text-blue-800 shadow-lg transition hover:bg-blue-50 sm:inline-flex"
           >
-            Track Package
+            {t.trackShipment}
           </a>
         </div>
       </header>
@@ -115,20 +139,18 @@ export default function Home() {
           <div className="max-w-2xl">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-300/30 bg-white/10 px-4 py-2 text-sm font-medium text-blue-100 backdrop-blur">
               <Globe2 className="h-4 w-4" />
-              Reliable shipping across borders
+              {t.reliableShipping}
             </div>
 
             <h1 className="text-5xl font-black leading-tight tracking-tight text-white sm:text-6xl lg:text-7xl">
-              Delivering
-              <span className="block text-blue-300">
-                Beyond Borders.
-              </span>
-            </h1>
+  {t.delivering}
+  <span className="block text-blue-300">
+    {t.beyondBorders}
+  </span>
+</h1>
 
             <p className="mt-6 max-w-xl text-lg leading-8 text-blue-100 sm:text-xl">
-              Fast, reliable and secure shipping solutions for individuals
-              and businesses. From local deliveries to international
-              logistics, Wing Express Logistics keeps your packages moving.
+              {t.heroDescription}
             </p>
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -136,7 +158,7 @@ export default function Home() {
                 href="#tracking"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-bold text-blue-800 shadow-xl transition hover:bg-blue-50"
               >
-                Track Your Shipment
+                {t.trackYourShipment}
                 <ArrowRight className="h-5 w-5" />
               </a>
 
@@ -144,7 +166,7 @@ export default function Home() {
                 href="#services"
                 className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-7 py-3.5 font-bold text-white backdrop-blur transition hover:bg-white/20"
               >
-                Explore Services
+                {t.exploreServices}
               </a>
             </div>
 
@@ -152,21 +174,21 @@ export default function Home() {
               <div>
                 <p className="text-2xl font-black text-white">24/7</p>
                 <p className="mt-1 text-sm text-blue-200">
-                  Shipment Tracking
+                  {t.shipmentTracking}
                 </p>
               </div>
 
               <div>
                 <p className="text-2xl font-black text-white">Secure</p>
                 <p className="mt-1 text-sm text-blue-200">
-                  Package Handling
+                  {t.packageHandling}
                 </p>
               </div>
 
               <div>
                 <p className="text-2xl font-black text-white">Global</p>
                 <p className="mt-1 text-sm text-blue-200">
-                  Delivery Network
+                 {t.deliveryNetwork}
                 </p>
               </div>
             </div>
@@ -183,12 +205,11 @@ export default function Home() {
               </div>
 
               <h2 className="text-2xl font-extrabold text-slate-950">
-                Track Your Shipment
+                {t.trackYourShipment}
               </h2>
 
               <p className="mt-2 text-sm leading-6 text-slate-500">
-                Enter your tracking number to see the latest location and
-                delivery status of your package.
+                {t.trackingDescription}
               </p>
 
               <form onSubmit={handleTracking} className="mt-7">
@@ -196,7 +217,7 @@ export default function Home() {
                   htmlFor="trackingNumber"
                   className="mb-2 block text-sm font-semibold text-slate-700"
                 >
-                  Tracking Number
+                  {t.trackingNumber}
                 </label>
 
                 <input
@@ -211,7 +232,7 @@ export default function Home() {
   type="submit"
                   className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3.5 font-bold text-white transition hover:bg-blue-800"
                 >
-                  Track Shipment
+                  {t.track}
                   <ArrowRight className="h-5 w-5" />
                 </button>
               </form>
@@ -220,8 +241,7 @@ export default function Home() {
                 <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-blue-700" />
 
                 <p className="text-xs leading-5 text-slate-600">
-                  Your shipment information is securely managed and updated
-                  by our logistics team.
+                  {t.securityNotice}
                 </p>
               </div>
             </div>
@@ -237,16 +257,15 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-700">
-              Our Services
+              {t.servicesLabel}
             </p>
 
             <h2 className="mt-3 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
-              Shipping made simple.
+              {t.servicesHeading}
             </h2>
 
             <p className="mt-5 text-lg leading-8 text-slate-600">
-              Flexible logistics solutions designed to move your packages
-              safely and efficiently.
+              {t.servicesDescription}
             </p>
           </div>
 
@@ -254,23 +273,23 @@ export default function Home() {
             {[
               {
                 icon: Package,
-                title: "Parcel Delivery",
-                text: "Reliable delivery solutions for documents, parcels and packages.",
+                title: t.serviceParcelDelivery,
+                text: t.serviceParcelDescription,
               },
               {
                 icon: Globe2,
-                title: "International Shipping",
-                text: "Move shipments across borders with dependable logistics support.",
+                title: t.serviceInternationalShipping,
+                text: t.serviceInternationalDescription,
               },
               {
                 icon: Truck,
-                title: "Express Delivery",
-                text: "Time-sensitive delivery options for packages that need to arrive fast.",
+                title: t.serviceExpressDelivery,
+                text: t.serviceExpressDescription,
               },
               {
                 icon: ShieldCheck,
-                title: "Secure Handling",
-                text: "Careful handling and shipment updates throughout the delivery journey.",
+                title: t.serviceSecureHandling,
+                text: t.serviceSecureDescription,
               },
             ].map((service) => {
               const Icon = service.icon;
@@ -296,7 +315,7 @@ export default function Home() {
                     href="#contact"
                     className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-blue-700 hover:text-blue-900"
                   >
-                    Learn more
+                    {t.learnMore}
                     <ArrowRight className="h-4 w-4" />
                   </a>
                 </div>
@@ -311,24 +330,23 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-700">
-              Why Wing Express
+              {t.aboutWhy}
             </p>
 
             <h2 className="mt-3 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
-              Your package is in good hands.
+              {t.aboutHeading}
             </h2>
 
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              We are building Wing Express Logistics around a simple idea:
-              shipping should be dependable, transparent and easy to track.
+             {t.aboutDescription}
             </p>
 
             <div className="mt-8 space-y-4">
               {[
-                "Real-time shipment status updates",
-                "Professional package handling",
-                "Local and international delivery solutions",
-                "Clear communication throughout the delivery process",
+                t.aboutRealTimeUpdates,
+                t.aboutProfessionalHandling,
+                t.aboutDeliverySolutions,
+                t.aboutClearCommunication,
               ].map((item) => (
                 <div key={item} className="flex items-center gap-3">
                   <CheckCircle2 className="h-5 w-5 shrink-0 text-blue-700" />
@@ -348,21 +366,20 @@ export default function Home() {
               <MapPin className="h-12 w-12 text-blue-200" />
 
               <h3 className="mt-8 text-3xl font-black text-white">
-                Know where your shipment is.
+                {t.aboutTrackingHeading}
               </h3>
 
               <p className="mt-4 leading-7 text-blue-100">
-                Our tracking system will give customers visibility from the
-                moment a shipment is created until it reaches its destination.
+                {t.aboutTrackingDescription}
               </p>
 
               <div className="mt-8 rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur">
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-semibold text-white">
-                    Shipment Progress
+                    {t.shipmentProgress}
                   </span>
 
-                  <span className="text-blue-200">Coming Soon</span>
+                  <span className="text-blue-200">{t.comingSoon}</span>
                 </div>
 
                 <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/20">
@@ -370,9 +387,9 @@ export default function Home() {
                 </div>
 
                 <div className="mt-4 flex justify-between text-xs text-blue-200">
-                  <span>Picked Up</span>
-                  <span>In Transit</span>
-                  <span>Delivered</span>
+                  <span>{t.pickedUp}</span>
+<span>{t.inTransit}</span>
+<span>{t.delivered}</span>
                 </div>
               </div>
             </div>
@@ -385,12 +402,11 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           <div>
             <h2 className="text-3xl font-black text-white sm:text-4xl">
-              Ready to ship with Wing Express?
+              {t.contactHeading}
             </h2>
 
             <p className="mt-3 max-w-2xl text-blue-100">
-              Get in touch with our team to discuss your shipping and
-              logistics needs.
+              {t.contactDescription}
             </p>
           </div>
 
@@ -398,7 +414,7 @@ export default function Home() {
             href="mailto:info@wingexpressshipping.com"
             className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-7 py-3.5 font-bold text-blue-800 shadow-lg transition hover:bg-blue-50"
           >
-            Contact Us
+            {t.contactButton}
             <ArrowRight className="h-5 w-5" />
           </a>
         </div>
@@ -419,58 +435,58 @@ export default function Home() {
       />
 
       <p className="mt-4 text-sm text-slate-400">
-        Reliable logistics. Wherever you need to go.
+        {t.footerTagline}
       </p>
     </div>
 
     {/* Quick Links */}
     <div>
-      <h3 className="text-base font-bold text-white">Quick Links</h3>
+      <h3 className="text-base font-bold text-white">{t.quickLinks}</h3>
 
       <div className="mt-4 flex flex-col gap-3 text-sm">
         <a href="#home" className="text-slate-400 transition hover:text-white">
-          Home
+         {t.home}
         </a>
         <a
           href="#services"
           className="text-slate-400 transition hover:text-white"
         >
-          Services
+          {t.services}
         </a>
         <a
           href="#tracking"
           className="text-slate-400 transition hover:text-white"
         >
-          Track Shipment
+          {t.trackShipment}
         </a>
         <a
           href="#contact"
           className="text-slate-400 transition hover:text-white"
         >
-          Contact Us
+          {t.contactUs}
         </a>
       </div>
     </div>
 
     {/* Contact */}
     <div>
-      <h3 className="text-base font-bold text-white">Contact Us</h3>
+      <h3 className="text-base font-bold text-white">{t.contactUs}</h3>
 
       <div className="mt-4 space-y-3 text-sm text-slate-400">
-        <p>Email: info@wingxpresslogistics.com</p>
-        <p>Phone: +44 73 554 53466</p>
+        <p>{t.footerEmail} info@wingxpresslogistics.com</p>
+        <p>{t.footerPhone} +44 73 554 53466</p>
         <p>
-  Address: 88-90 Chorlton Rd, Old Trafford, Stretford,
+  {t.footerAddress} 88-90 Chorlton Rd, Old Trafford, Stretford,
   Manchester M15 4AN, United Kingdom
 </p>
-<p>Available for local and international shipping inquiries.</p>
+<p>{t.contactAvailability}</p>
       </div>
     </div>
   </div>
 
   {/* Bottom copyright */}
   <div className="mt-10 border-t border-slate-800 pt-6 text-center text-sm text-slate-500">
-    © 2026 Wing Express Logistics. All rights reserved.
+    {t.copyright}
   </div>
 </div>
       </footer>

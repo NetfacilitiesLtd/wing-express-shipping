@@ -17,7 +17,8 @@ import {
   Warehouse,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-
+import { useLanguage } from "../i18n/LanguageContext";
+import { translations } from "../i18n/translations";
 type Shipment = {
   id: string;
   tracking_number: string;
@@ -50,6 +51,34 @@ type TrackingEvent = {
 };
 
 function TrackPageContent() {
+  const { language } = useLanguage();
+  const t = translations[language];
+
+  const getTranslatedStatus = (status: string) => {
+  switch (status.toLowerCase()) {
+    case "pending":
+      return t.pending;
+    case "processing":
+      return t.processing;
+    case "awaiting shipment":
+      return t.awaitingShipment;
+    case "shipped":
+      return t.shipped;
+    case "in transit":
+      return t.inTransit;
+    case "picked up":
+      return t.pickedUp;
+    case "out for delivery":
+      return t.outForDelivery;
+    case "on hold":
+      return t.onHold;
+    case "delivered":
+      return t.delivered;
+    default:
+      return status;
+  }
+};
+
   const searchParams = useSearchParams();
 
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -66,7 +95,7 @@ function TrackPageContent() {
     setUpdates([]);
 
     if (!value) {
-      setError("Please enter a tracking number.");
+      setError(t.enterTrackingNumber);
       return;
     }
 
@@ -250,7 +279,7 @@ function TrackPageContent() {
             href="/"
             className="hidden text-sm font-bold text-slate-600 transition hover:text-blue-700 sm:block"
           >
-            Back to Website
+            {t.backToWebsite}
           </a>
         </div>
       </header>
@@ -271,12 +300,11 @@ function TrackPageContent() {
           </div>
 
           <h1 className="mt-6 text-4xl font-black tracking-tight sm:text-5xl">
-            Track Your Shipment
+            {t.trackYourShipment}
           </h1>
 
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-blue-100 sm:text-lg">
-            Enter your Wing Express tracking number to see your package&apos;s
-            latest location, status and tracking history.
+            {t.trackingDescription}
           </p>
 
           {/* Search */}
@@ -294,7 +322,7 @@ function TrackPageContent() {
                   onChange={(event) =>
                     setTrackingNumber(event.target.value.toUpperCase())
                   }
-                  placeholder="Enter tracking number"
+                  placeholder={t.enterTrackingNumber}
                   className="w-full rounded-xl border border-transparent bg-slate-50 py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-300 focus:bg-white focus:ring-4 focus:ring-blue-100"
                 />
               </div>
@@ -304,14 +332,14 @@ function TrackPageContent() {
                 disabled={loading}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-7 py-4 text-sm font-bold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {loading ? "Searching..." : "Track Shipment"}
+                {loading ? t.searching : t.trackShipment}
                 {!loading && <ArrowRight className="h-5 w-5" />}
               </button>
             </div>
           </form>
 
           <p className="mt-4 text-xs text-blue-200">
-            Try the sample tracking number:{" "}
+            {t.sampleTrackingNumber}{" "}
             <span className="font-bold text-white">WEX-2026-000123</span>
           </p>
         </div>
@@ -345,7 +373,7 @@ function TrackPageContent() {
 
                 <div className="inline-flex w-fit items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-sm font-bold text-blue-700">
                   <span className="h-2 w-2 rounded-full bg-blue-600" />
-                  {shipment.status}
+                  {getTranslatedStatus(shipment.status)}
                 </div>
               </div>
             </div>
@@ -354,7 +382,7 @@ function TrackPageContent() {
               {/* Origin */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Origin
+                  {t.origin}
                 </p>
 
                 <div className="mt-2 flex items-center gap-2">
@@ -369,7 +397,7 @@ function TrackPageContent() {
               {/* Current Location */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Current Location
+                  {t.currentLocation}
                 </p>
 
                 <div className="mt-2 flex items-center gap-2">
@@ -392,7 +420,7 @@ function TrackPageContent() {
               {/* Destination */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Destination
+                  {t.destination}
                 </p>
 
                 <div className="mt-2 flex items-center gap-2">
@@ -408,7 +436,7 @@ function TrackPageContent() {
               {/* Shipment Type */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Shipment Type
+                  {t.shipmentType}
                 </p>
 
                 <div className="mt-2 flex items-center gap-2">
@@ -437,11 +465,11 @@ function TrackPageContent() {
 
               <div>
                 <h3 className="text-xl font-black text-slate-950">
-                  Shipment Information
+                  {t.shipmentInformation}
                 </h3>
 
                 <p className="mt-1 text-sm text-slate-500">
-                  Package and delivery details
+                  {t.packageDeliveryDetails}
                 </p>
               </div>
             </div>
@@ -450,7 +478,7 @@ function TrackPageContent() {
               {/* Recipient */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Recipient
+                 {t.recipientName}
                 </p>
 
                 <p className="mt-2 font-bold text-slate-900">
@@ -461,7 +489,7 @@ function TrackPageContent() {
               {/* Package Description */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Package Type
+                  {t.packageType}
                 </p>
 
                 <p className="mt-2 font-bold text-slate-900">
@@ -472,7 +500,7 @@ function TrackPageContent() {
               {/* Weight */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Weight
+                  {t.weight}
                 </p>
 
                 <p className="mt-2 font-bold text-slate-900">
@@ -485,7 +513,7 @@ function TrackPageContent() {
               {/* Shipping Method */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Shipping Method
+                  {t.shippingMethod}
                 </p>
 
                 <p className="mt-2 font-bold text-slate-900">
@@ -498,7 +526,7 @@ function TrackPageContent() {
               {/* Route */}
               <div className="sm:col-span-2">
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Shipping Route
+                  {t.shippingRoute}
                 </p>
 
                 <div className="mt-2 flex flex-wrap items-center gap-3">
@@ -527,7 +555,7 @@ function TrackPageContent() {
 
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wide text-blue-600">
-                    Estimated Delivery
+                    {t.estimatedDelivery}
                   </p>
 
                   <p className="mt-1 font-black text-slate-900">
@@ -547,11 +575,11 @@ function TrackPageContent() {
           <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <div>
               <h3 className="text-xl font-black text-slate-950">
-                Tracking History
+                {t.trackingHistory}
               </h3>
 
               <p className="mt-1 text-sm text-slate-500">
-                Latest updates for your shipment
+               {t.latestUpdates}
               </p>
             </div>
 
@@ -584,7 +612,7 @@ function TrackPageContent() {
                           </h4>
 
                           <p className="mt-1 text-sm font-bold text-blue-700">
-                            {update.status}
+                           {getTranslatedStatus(update.status)}
                           </p>
                         </div>
 
@@ -622,7 +650,7 @@ function TrackPageContent() {
 
             <div>
               <p className="text-sm font-bold text-slate-900">
-                Secure shipment tracking
+                {t.secureShipmentTracking}
               </p>
 
               <p className="mt-1 text-xs leading-5 text-slate-500">
@@ -727,10 +755,15 @@ function TrackPageContent() {
     </main>
   );
 }
+function LoadingFallback() {
+  const { language } = useLanguage();
+  const t = translations[language];
 
+  return <div>{t.loading}</div>;
+}
 export default function TrackPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingFallback />}>
       <TrackPageContent />
     </Suspense>
   );
