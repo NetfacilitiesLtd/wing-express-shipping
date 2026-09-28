@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   ClipboardCheck,
+  CirclePause,
   CheckCircle2,
   Clock3,
   Globe2,
@@ -260,6 +261,7 @@ if (currentStatus.includes("under review")) return ClipboardCheck;
     }
 
     if (currentStatus.includes("out for delivery")) return Truck;
+    if (currentStatus.includes("on hold")) return CirclePause;
     if (currentStatus.includes("delivered")) return CheckCircle2;
 
     return CheckCircle2;
