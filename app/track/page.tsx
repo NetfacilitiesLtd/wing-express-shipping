@@ -4,6 +4,7 @@ import { FormEvent, Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowRight,
+  ClipboardCheck,
   CheckCircle2,
   Clock3,
   Globe2,
@@ -60,6 +61,8 @@ function TrackPageContent() {
       return t.pending;
     case "processing":
       return t.processing;
+      case "under review":
+  return t.underReview;
     case "awaiting shipment":
       return t.awaitingShipment;
     case "shipped":
@@ -245,7 +248,7 @@ function TrackPageContent() {
 
   const getTrackingStatusIcon = (status: string) => {
     const currentStatus = status.toLowerCase();
-
+if (currentStatus.includes("under review")) return ClipboardCheck;
     if (currentStatus.includes("processing")) return Package;
     if (currentStatus.includes("awaiting")) return Clock3;
 

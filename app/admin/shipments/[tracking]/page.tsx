@@ -500,6 +500,7 @@ if (!shipmentData) {
                   >
                     <option value="Pending">Pending</option>
 <option value="Processing">Processing</option>
+<option value="Under Review">Under Review</option>
 <option value="Awaiting Shipment">Awaiting Shipment</option>
 <option value="Shipped">Shipped</option>
 <option value="In Transit">In Transit</option>
