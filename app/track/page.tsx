@@ -31,6 +31,8 @@ type Shipment = {
   recipient_phone: string | null;
   recipient_email: string | null;
   recipient_address: string | null;
+  customer_address?: string | null;
+origin?: string | null;
   origin_city: string;
   origin_country: string;
   destination_city: string;
@@ -141,7 +143,45 @@ function TrackPageContent() {
         return;
       }
 
-      if (!shipmentData) {
+            if (!shipmentData) {
+        const { data: storageData, error: storageError } = await supabase
+          .from("storage_records")
+          .select("*")
+          .eq("tracking_number", value)
+          .maybeSingle();
+
+        if (storageError) {
+          console.error(storageError);
+          setError("Unable to search for the tracking number right now.");
+          return;
+        }
+
+        if (storageData) {
+          setShipment({
+            ...storageData,
+            current_location: storageData.storage_location,
+            status: storageData.status,
+            shipment_type: "Storage",
+            package_description: storageData.asset_description || storageData.asset_name,
+            origin_city: "",
+            origin_country: "",
+            destination_city: "",
+            destination_country: "",
+          } as any);
+
+          setUpdates([
+            {
+              id: storageData.id,
+              status: storageData.status,
+              location: storageData.storage_location,
+              description: `Asset securely stored: ${storageData.asset_name}`,
+              event_time: storageData.created_at,
+            } as any,
+          ]);
+
+          return;
+        }
+
         setError(
           "We could not find a shipment with that tracking number. Please check the number and try again."
         );
@@ -251,6 +291,7 @@ function TrackPageContent() {
     const currentStatus = status.toLowerCase();
 if (currentStatus.includes("under review")) return ClipboardCheck;
     if (currentStatus.includes("processing")) return Package;
+    if (currentStatus.includes("storage facility")) return Warehouse;
     if (currentStatus.includes("awaiting")) return Clock3;
 
     if (
@@ -385,19 +426,21 @@ if (currentStatus.includes("under review")) return ClipboardCheck;
 
             <div className="grid gap-6 p-6 sm:grid-cols-3 sm:p-8">
               {/* Origin */}
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
-                  {t.origin}
-                </p>
+<div>
+  <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+    {t.origin}
+  </p>
 
-                <div className="mt-2 flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-blue-600" />
+  <div className="mt-2 flex items-center gap-2">
+    <MapPin className="h-5 w-5 text-blue-600" />
 
-                  <p className="font-bold text-slate-900">
-                    {shipment.origin_city}, {shipment.origin_country}
-                  </p>
-                </div>
-              </div>
+    <p className="font-bold text-slate-900">
+      {shipment.shipment_type === "Storage"
+        ? shipment.customer_address || shipment.origin || "Customer Address"
+        : `${shipment.origin_city || ""}, ${shipment.origin_country || ""}`}
+    </p>
+  </div>
+</div>
 
               {/* Current Location */}
               <div>
@@ -432,9 +475,10 @@ if (currentStatus.includes("under review")) return ClipboardCheck;
                   <Globe2 className="h-5 w-5 text-blue-600" />
 
                   <p className="font-bold text-slate-900">
-                    {shipment.destination_city},{" "}
-                    {shipment.destination_country}
-                  </p>
+  {shipment.shipment_type === "Storage"
+    ? shipment.current_location
+    : `${shipment.destination_city}, ${shipment.destination_country}`}
+</p>
                 </div>
               </div>
 
@@ -487,7 +531,9 @@ if (currentStatus.includes("under review")) return ClipboardCheck;
                 </p>
 
                 <p className="mt-2 font-bold text-slate-900">
-                  {shipment.recipient_name || "Not specified"}
+                  {shipment.shipment_type === "Storage"
+  ? shipment.customer_name || "Not specified"
+  : shipment.recipient_name || "Not specified"}
                 </p>
               </div>
 
@@ -498,7 +544,9 @@ if (currentStatus.includes("under review")) return ClipboardCheck;
                 </p>
 
                 <p className="mt-2 font-bold text-slate-900">
-                  {shipment.package_description || "Not specified"}
+                  {shipment.shipment_type === "Storage"
+  ? shipment.package_description || "Asset description not provided"
+  : shipment.package_description || "Not specified"}
                 </p>
               </div>
 
@@ -536,14 +584,17 @@ if (currentStatus.includes("under review")) return ClipboardCheck;
 
                 <div className="mt-2 flex flex-wrap items-center gap-3">
                   <span className="font-bold text-slate-900">
-                    {shipment.origin_city}, {shipment.origin_country}
+                    {shipment.shipment_type === "Storage"
+  ? "Storage Facility"
+  : `${shipment.origin_city}, ${shipment.origin_country}`}
                   </span>
 
                   <ArrowRight className="h-4 w-4 text-blue-600" />
 
                   <span className="font-bold text-slate-900">
-                    {shipment.destination_city},{" "}
-                    {shipment.destination_country}
+                    {shipment.shipment_type === "Storage"
+  ? "Secure Asset Storage"
+  : `${shipment.destination_city}, ${shipment.destination_country}`}
                   </span>
                 </div>
               </div>

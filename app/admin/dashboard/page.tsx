@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 import {
-  ArrowRight,
+    ArrowRight,
+  Archive,
   BarChart3,
   CheckCircle2,
   Clock3,
@@ -16,6 +17,7 @@ import {
   Settings,
   Truck,
   Users,
+  Warehouse,
 } from "lucide-react";
 
 
@@ -99,12 +101,20 @@ export default function AdminDashboardPage() {
               </a>
 
               <a
-                href="/admin/shipments"
-                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
-              >
-                <Package className="h-5 w-5" />
-                Shipments
-              </a>
+  href="/admin/shipments"
+  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+>
+  <Package className="h-5 w-5" />
+  Shipments
+</a>
+
+<a
+  href="/admin/storage"
+  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+>
+  <Warehouse className="h-5 w-5" />
+  Storage
+</a>
 
               <a
                 href="/admin/customers"
@@ -198,13 +208,23 @@ export default function AdminDashboardPage() {
                 </p>
               </div>
 
-              <a
-                href="/admin/shipments/new"
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-blue-700 transition hover:bg-blue-50"
-              >
-                <Plus className="h-5 w-5" />
-                Create Shipment
-              </a>
+              <div className="flex flex-wrap items-center gap-3">
+  <a
+    href="/admin/shipments/new"
+    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-blue-700 transition hover:bg-blue-50"
+  >
+    <Plus className="h-5 w-5" />
+    Create Shipment
+  </a>
+
+  <a
+    href="/admin/storage/new"
+    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 py-3 text-sm font-bold text-white transition hover:bg-emerald-600"
+  >
+    <Archive className="h-5 w-5" />
+    Create Storage
+  </a>
+</div>
             </div>
 
             {/* Stats */}
