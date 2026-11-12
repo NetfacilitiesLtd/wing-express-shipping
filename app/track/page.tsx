@@ -175,7 +175,7 @@ function TrackPageContent() {
               status: storageData.status,
               location: storageData.storage_location,
               description: `Asset securely stored: ${storageData.asset_name}`,
-              event_time: storageData.created_at,
+              event_time: storageData.storage_start_date,
             } as any,
           ]);
 
